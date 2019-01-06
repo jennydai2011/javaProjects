@@ -1,7 +1,7 @@
 
 # Java 面试准备
 
-## [Java core relative link] (java_core/README.md)
+## [Java core](java_core/README.md)
   - 集合
   - 多线程
   - 异常处理流程
