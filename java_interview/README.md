@@ -1,7 +1,7 @@
 
 # Java 面试准备
 
-## Java core
+## [Java core] (https://github.com/jennydai2011/javaProjects/tree/master/java_interview/java_core)
   - 集合
   - 多线程
   - 异常处理流程
