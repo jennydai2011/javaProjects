@@ -1,5 +1,24 @@
 ##架构方面
     
+1. 熟悉SSM架构，至少在项目里做过。
+
+这个的说法是，介绍项目时，用一个业务流程来说spring mvc如何做的。
+
+2. 知道Spring MVC中的细节，比如@Autowired的用法，如何把url映射到Controller上，ModelAndView对象返回的方式等。
+
+3. 最好结合项目的用法，说下你是怎么用AOP，拦截器的，比如说可以通过拦截器拦截非法请求，怎么用 AOP输出日志等。
+
+4. 关于ORM方面，不限用过哪种，但得知道一对一，一多多，多对多等的用法，以及cascade和inverse的用法。
+
+5. 最好知道声明式事务的做法。
+
+如果你要应聘高级开发，那在上述基础上，最好了解如下的知识点：
+
+- Spring Bean的周期
+- 最好能通过阅读源代码，说下IOC,AOP以及Spring MVC的工作流程，推荐阅读：史上最全 69 道 Spring 面试题和答案
+- 最好能结合反射，说下IOC等的实现原理
+- Spring Boot和Spring Cloud的一些知识点
+
 1. 能证明自己可以干活（这不难），同时能结合底层代码说出IOC，AOP或Spring MVC的流程，只要能说出一个即可。或者能说出拦截器，Controller等的高级用法。
     
 2. 能证明自己有Spring Boot或Spring Cloud的经验，比如能说出些Spring Cloud组件的用法。
