@@ -1,10 +1,15 @@
+### [java 8 doc] (https://docs.oracle.com/javase/8/docs/)
+  * [troubleshoot](https://docs.oracle.com/javase/8/docs/technotes/tools/index.html#troubleshoot)
+
 # Tool
   ## JDK built-in tool
     * jps ( -ml, -lv)           - check process ID
     * jstack
     * jmap
     * jcmd
-    * jstat
+    * [jstat](https://docs.oracle.com/javase/8/docs/technotes/tools/unix/jstat.html)
+      * jstat -class pid interval count
+      * jstat -gc pid
     * jhat
     * javap
   
