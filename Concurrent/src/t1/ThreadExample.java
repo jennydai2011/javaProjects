@@ -1,19 +1,21 @@
 package t1;
 
-import sun.jvm.hotspot.debugger.ThreadAccess;
+import org.w3c.dom.ls.LSOutput;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.TimeUnit;
+import java.util.concurrent.*;
 
 public class ThreadExample {
 
 
     public static void main(String[] args) {
-        test3();
+        try {
+            test7();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 
     //difference between method call and thread run
@@ -58,14 +60,103 @@ public class ThreadExample {
            String threadName = Thread.currentThread().getName();
             System.out.println(" Hello " + threadName);
         });
+
+        try {
+            executor.shutdown();
+            executor.awaitTermination(5, TimeUnit.SECONDS);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } finally {
+
+            if(!executor.isTerminated()){
+                System.err.println("cancel non-finished taks");
+            }
+            executor.shutdownNow();
+            System.out.println("shutdown finished");
+        }
     }
 
+    public static void test4(){
+        Callable<Integer> task = () -> {
+          try {
+              TimeUnit.MINUTES.sleep(1);
+              return 123;
+          }catch (InterruptedException e){
+              throw  new IllegalStateException("task interrupted", e);
+          }
 
-    public static void test() {
-        List<String> test = Arrays.asList("1", "2", "3", "4");
-        String result = String.join("", test);
-        System.out.println(result);
+        };
 
+        ExecutorService executor = Executors.newFixedThreadPool(1);
+        Future<Integer> future = executor.submit(task);
+        System.out.println("future done?"+ future.isDone());
 
+        Integer result = null;
+        try {
+            result = future.get(20, TimeUnit.SECONDS);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException | TimeoutException e) {
+            e.printStackTrace();
+        }
+
+        System.out.println("future done?" + future.isDone());
+        System.out.println("result is：" + result);
+
+        executor.shutdown();
+    }
+
+    public static void test5() throws InterruptedException {
+        ExecutorService executor = Executors.newWorkStealingPool();
+        List<Callable<String>> callables = Arrays.asList(
+                () -> "task1",
+                () -> "task2",
+                () -> "task3"
+        );
+
+        executor.invokeAll(callables)
+                .stream()
+                .map( future -> {
+
+                    try {
+                        return future.get();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                    return null;
+                }).forEach(System.out::println);
+
+    }
+
+    public static void test6() throws ExecutionException, InterruptedException {
+        ExecutorService executor = Executors.newWorkStealingPool();
+        List<Callable<String>> callables = Arrays.asList(
+                createCallable("result1", 1),
+                createCallable("result2", 2),
+                createCallable("result3", 3)
+        );
+
+        String actualResult = executor.invokeAny(callables);
+        System.out.println("actualResult of invokeAny is:" + actualResult);
+
+    }
+
+    static Callable<String> createCallable (String result, long sleepSeconds) {
+        return () -> {
+            TimeUnit.SECONDS.sleep(sleepSeconds);
+            return result;
+        };
+    }
+
+    public static void test7() throws InterruptedException {
+        ScheduledExecutorService executor = Executors.newScheduledThreadPool(1);
+        Runnable task = () -> System.out.println(" Scheduling: " + System.nanoTime());
+
+        ScheduledFuture<?> future = executor.schedule(task, 3, TimeUnit.SECONDS);
+        TimeUnit.MILLISECONDS.sleep(1337);
+
+        long remainingDelay = future.getDelay(TimeUnit.MILLISECONDS);
+
+        System.out.printf("Remaining Delay: %sms", remainingDelay);
     }
 }
